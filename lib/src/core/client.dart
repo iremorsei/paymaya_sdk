@@ -1,38 +1,3 @@
-// import 'package:paymaya/paymaya.dart';
-
-// /// {@template paymongo_client_sdk}
-// /// {@endtemplate}
-// class PaymayaClient<T extends Paymaya> {
-//   /// {@macro paymongo_client_sdk}
-//   const PaymayaClient(
-//     String key, {
-//     String url = 'pg-sandbox.paymaya.com',
-//     T? defaultSDK,
-//   })  : _key = key,
-//         _sdk = defaultSDK,
-//         _url = url;
-//   final String _key;
-//   final T? _sdk;
-//   final String _url;
-
-//   /// Retrieve the instance of [Paymongo] to access private or public APIs.
-//   T get instance {
-//     final keyType = _key.split('_').first;
-//     if (keyType.contains(secretKey)) {
-//       return (PaymayaSecret()
-//         ..key = _key
-//         ..url = _url) as T;
-//     } else if (keyType.contains(publicKey)) {
-//       return (PaymayaPublic()
-//         ..key = _key
-//         ..url = _url) as T;
-//     } else if (_sdk != null) {
-//       return _sdk!;
-//     }
-//     throw PaymayaError("Key does not match with private or secret key");
-//   }
-// }
-
 import 'package:paymaya_sdk/paymaya.dart';
 
 enum PaymayaEnvironment {
@@ -40,10 +5,11 @@ enum PaymayaEnvironment {
   sandbox,
 }
 
-/// {@template paymongo_client_sdk}
+/// {@template paymaya_client_sdk}
 /// {@endtemplate}
 class PaymayaClient<T extends Paymaya> {
-  /// {@macro paymongo_client_sdk}
+  /// {@macro paymaya_client_sdk}
+
   const PaymayaClient(
     String key, {
     this.environment = PaymayaEnvironment.sandbox,
@@ -65,7 +31,8 @@ class PaymayaClient<T extends Paymaya> {
     }
   }
 
-  /// Retrieve the instance of [Paymongo] to access private or public APIs.
+  /// Retrieve the instance of [paymaya] to access private or public APIs.
+
   T get instance {
     final keyType = _key.split('_').first;
     if (keyType.contains(secretKey)) {

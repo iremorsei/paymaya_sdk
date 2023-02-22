@@ -23,12 +23,14 @@ mixin PaymentResponseSerializer {
       // final errors = jsonErrors.map(PaymayaErrorCodes.fromMap).toList();
       // throw PaymayaError(
       //   "Error ${response.statusCode}",
-      //   paymongoErrors: errors,
+
+      //   paymayaErrors: errors,
+
       // );
       final errors = <PaymayaErrorCodes>[];
       throw PaymayaError(
         "Error ${response.statusCode}",
-        paymongoErrors: errors,
+        paymayaErrors: errors,
       );
     }
     return onSerializedCallback?.call(json) ?? json as T;

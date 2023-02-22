@@ -1,8 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -25,61 +22,34 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
-  final Completer<WebViewController> _controller = Completer();
+  late final WebViewController _controller;
   @override
   void initState() {
     super.initState();
-  }
+    // #docregion platform_features
+    late final PlatformWebViewControllerCreationParams params;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+    params = const PlatformWebViewControllerCreationParams();
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, false);
-        return false;
-      },
-      child: Scaffold(
-          body: SafeArea(
-        child: WebView(
-          onWebViewCreated: _controller.complete,
-          initialUrl:
-              widget.iFrameMode ? toCheckoutURL(widget.url) : widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
-          debuggingEnabled: kDebugMode,
-          navigationDelegate: (request) {
-            if (request.url.contains('success')) {
-              Navigator.pop(context, true);
-              return NavigationDecision.prevent;
-            }
-            if (request.url.contains('failed')) {
-              Navigator.pop(context, false);
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
+    // #enddocregion platform_features
+
+    controller
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
           },
-          javascriptChannels: {
-            JavascriptChannel(
-                name: 'Paymaya',
-                onMessageReceived: (JavascriptMessage message) {
-                  if (message.message == 'AUTH_SUCCESS') {
-                    Navigator.pop(context, true);
-                    return;
-                  }
-                  if (message.message.contains('PAYMENT_SUCCESS')) {
-                    Navigator.pop(context, true);
-                    return;
-                  }
-                  if (message.message.contains('PAYMENT_FAILED')) {
-                    Navigator.pop(context, false);
-                  }
-                }),
+          onPageStarted: (String url) {
+            debugPrint('Page started loading: $url');
           },
-          onWebResourceError: (error) async {
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+          },
+          onWebResourceError: (WebResourceError error) async {
             final dialog = await showDialog(
               context: context,
               builder: (context) {
@@ -101,8 +71,57 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
               Navigator.pop(context, false);
             }
           },
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.contains('success')) {
+              Navigator.pop(context, true);
+              return NavigationDecision.prevent;
+            }
+            if (request.url.contains('failed')) {
+              Navigator.pop(context, false);
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
         ),
-      )),
+      )
+      ..addJavaScriptChannel('Paymaya',
+          onMessageReceived: (JavaScriptMessage message) {
+        if (message.message == 'AUTH_SUCCESS') {
+          Navigator.pop(context, true);
+          return;
+        }
+        if (message.message.contains('PAYMENT_SUCCESS')) {
+          Navigator.pop(context, true);
+          return;
+        }
+        if (message.message.contains('PAYMENT_FAILED')) {
+          Navigator.pop(context, false);
+        }
+      })
+      ..loadRequest(Uri.parse(
+          widget.iFrameMode ? toCheckoutURL(widget.url) : widget.url));
+
+    _controller = controller;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, false);
+        return false;
+      },
+      child: Scaffold(
+        body: SafeArea(
+            child: WebViewWidget(
+          controller: _controller,
+        )),
+      ),
     );
   }
 }

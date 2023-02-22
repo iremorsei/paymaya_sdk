@@ -30,7 +30,8 @@ class PaymentGateway extends Equatable {
     required this.apiKey,
   });
 
-  /// defaults to api.paymongo.com
+  /// defaults to api.paymaya.com
+
   final String url;
 
   /// can be public or secret key

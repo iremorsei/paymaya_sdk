@@ -10,6 +10,9 @@ class PaymentsAttributes with _$PaymentsAttributes {
     required TotalAmount totalAmount,
     Buyer? buyer,
     RedirectUrl? redirectUrl,
+    String? requestReferenceNumber,
+    String? authorizationType,
+    Metadata? metadata,
   }) = _PaymentModel;
 
   factory PaymentsAttributes.fromJson(Map<String, Object?> json) =>
@@ -99,4 +102,33 @@ class RedirectUrl with _$RedirectUrl {
 
   factory RedirectUrl.fromJson(Map<String, dynamic> json) =>
       _$RedirectUrlFromJson(json);
+}
+
+@freezed
+abstract class Metadata with _$Metadata {
+  const factory Metadata({
+    String? subMerchantRequestReferenceNumber,
+    Pf? pf,
+  }) = _Metadata;
+  factory Metadata.fromJson(Map<String, Object?> json) =>
+      _$MetadataFromJson(json);
+}
+
+@freezed
+abstract class Pf with _$Pf {
+  const factory Pf({
+    String? smi,
+    String? smn,
+    String? mci,
+    String? mpc,
+    String? mco,
+    String? mst,
+    String? mcc,
+    String? postalCode,
+    String? contactNo,
+    String? state,
+    String? addressLine1,
+  }) = _Pf;
+
+  factory Pf.fromJson(Map<String, dynamic> json) => _$PfFromJson(json);
 }

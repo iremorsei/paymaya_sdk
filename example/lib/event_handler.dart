@@ -4,11 +4,11 @@ import 'package:example/checkout.dart';
 import 'package:example/shoes.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:paymaya/paymaya.dart';
+import 'package:paymaya_sdk/paymaya.dart';
 
 const publicKey = String.fromEnvironment(
   'PUBLIC_KEY',
-  defaultValue: 'pk-eo4sL393CWU5KmveJUaW8V730TTei2zY8zE4dHJDxkF:',
+  defaultValue: 'pk-eo4sL393CWU5KmveJUaW8V730TTei2zY8zE4dHJDxkF',
 );
 const secretKey = String.fromEnvironment(
   'SECRET_KEY',

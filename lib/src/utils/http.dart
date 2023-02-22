@@ -5,17 +5,21 @@ import 'package:paymaya_sdk/paymaya.dart';
 
 ///
 /// ### 🚧 DO NOT USE SECRET KEY IN PRODUCTION
-/// {@template paymonggosdk}
+
+/// {@template paymayasdk}
 /// Following methods will use secret key
 ///
 /// - [createPayment]
-/// Initialize PayMongo SDK.
+/// Initialize paymaya SDK.
+
 ///
 ///
 /// The code provided is an example of using a secret key
 /// ```dart
-/// final publicKeyClient = PayMongoSDK(publicKey);
-/// final secretKeyClient = PayMongoSDK(secretKey);
+
+/// final publicKeyClient = paymayaSDK(publicKey);
+/// final secretKeyClient = paymayaSDK(secretKey);
+
 /// ```
 /// {@endtemplate}
 
@@ -25,10 +29,13 @@ class PayMayaSDK {
       : _apiUrl = apiUrl,
         assert(
           secret.isNotEmpty,
-          "API KEY must be provided, go to PayMongo Dashboard",
+
+          /// key generated from paymongo dashboard
+          "API KEY must be provided, go to paymaya Dashboard",
         );
 
-  /// key generated from paymongo dashboard
+  /// key generated from paymaya dashboard
+
   /// you can use `--dart-define` command to store your private key.
   final String secret;
   final String _apiUrl;
@@ -72,15 +79,17 @@ class PayMayaSDK {
 }
 
 /// {@template paymongohttp}
+
 /// Alternative HTTP client. can be extensible for custom http
 /// client. use [base64] to generate authorization key.
 /// {@endtemplate}
 ///
 class PayMayaHttp extends _http.BaseClient {
-  /// {@macro paymongohttp}
+  /// {@macro paymayahttp}
   PayMayaHttp(this.apiKey);
 
-  /// uses public or secret PayMongo key.
+  /// uses public or secret paymaya key.
+
   final String apiKey;
   @override
   Future<_http.StreamedResponse> send(_http.BaseRequest request) {

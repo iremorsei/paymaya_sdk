@@ -7,42 +7,47 @@ class PaymayaError extends Error {
   /// Throws Error
   PaymayaError(
     this.error, {
-    this.paymongoErrors,
+    this.paymayaErrors,
   });
 
   /// Error message
   final String error;
 
-  /// errors from paymongo
-  final List<PaymayaErrorCodes?>? paymongoErrors;
+  /// errors from paymaya
+  final List<PaymayaErrorCodes?>? paymayaErrors;
 }
 
-/// {@template paymongo_error_codes}
+/// {@template paymaya_error_codes}
 ///
-/// PayMongo API is RESTful and uses conventional HTTP response codes
+/// paymaya API is RESTful and uses conventional HTTP response codes
+
 /// to indicate the success or failure of API requests.
 /// The table below will help you identify the meaning and the implication
 /// of error responses. As a general rule of thumb: Codes in the 2xx range
 ///  indicate success. Codes in the 4xx range indicate a failure from the
 /// given information (e.g. missing API keys, invalid parameters, failed
 /// transaction, etc.). Codes in the 5xx range mean that there's an unexpected
-/// error on the PayMongo servers. These shouldn't happen, but when they do,
+
+/// error on the paymaya servers. These shouldn't happen, but when they do,
+
 /// please inform us right away.
 ///
 /// {@endtemplate}
 class PaymayaErrorCodes extends Equatable {
   /// {@macro paymongo_error_codes}
+
   const PaymayaErrorCodes({
     this.code,
     this.message,
     this.parameters,
   });
 
-  /// {@macro paymongo_error_codes}
+  /// {@macro paymaya_error_codes}
   factory PaymayaErrorCodes.fromJson(String parameters) =>
       PaymayaErrorCodes.fromMap(json.decode(parameters));
 
-  /// {@macro paymongo_error_codes}
+  /// {@macro paymaya_error_codes}
+
   factory PaymayaErrorCodes.fromMap(Map<String, dynamic> map) {
     return PaymayaErrorCodes(
       code: map['code'],
