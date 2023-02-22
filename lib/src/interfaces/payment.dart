@@ -58,6 +58,28 @@ class PaymentGateway extends Equatable {
     return response;
   }
 
+  Future<http.Response> send<T>(PayMayaOptions options) async {
+    final http = PayMayaHttp(apiKey);
+
+    final response = await http.post(
+      Uri.https(url, "checkout/v1${options.path}", options.params),
+      body: jsonEncode(options.data),
+    );
+    http.close();
+
+    return response;
+  }
+
+  /// make GET response
+  Future<http.Response> get<T>(PayMayaOptions options) async {
+    final http = PayMayaHttp(apiKey);
+
+    final response =
+        await http.get(Uri.https(url, "${options.path}", options.params));
+    http.close();
+    return response;
+  }
+
   @override
   List<Object> get props => [url, apiKey];
 }

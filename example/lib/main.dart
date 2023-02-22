@@ -106,6 +106,12 @@ class _PaymentOptionListState extends State<PaymentOptionList>
               await credcardPayment(widget.cart);
             },
           ),
+          ListTile(
+            title: const Text("Checkout Payment"),
+            onTap: () async {
+              await checkoutPayment(widget.cart);
+            },
+          ),
         ],
       ),
     );

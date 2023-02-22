@@ -48,4 +48,28 @@ class PaymayaClient<T extends Paymaya> {
     }
     throw PaymayaError("Key does not match with private or secret key");
   }
+
+  // T get instance {
+  //   final keyType = _key.split('_').first;
+  //   if (keyType.contains(secretKey)) {
+  //     // Validate that _baseUrl is a valid URL before using it
+  //     if (!Uri.parse(_baseUrl).isAbsolute) {
+  //       throw PaymayaError("Invalid URL");
+  //     }
+  //     return (PaymayaSecret()
+  //       ..key = _key
+  //       ..url = _baseUrl) as T;
+  //   } else if (keyType.contains(publicKey)) {
+  //     // Validate that _baseUrl is a valid URL before using it
+  //     if (!Uri.parse(_baseUrl).isAbsolute) {
+  //       throw PaymayaError("Invalid URL");
+  //     }
+  //     return (PaymayaPublic()
+  //       ..key = _key
+  //       ..url = _baseUrl) as T;
+  //   } else if (_sdk != null) {
+  //     return _sdk!;
+  //   }
+  //   throw PaymayaError("Key does not match with private or secret key");
+  // }
 }

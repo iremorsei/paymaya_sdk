@@ -36,7 +36,7 @@ mixin PaymayaEventHandler<T extends StatefulWidget> on State<T> {
 
       final payments = PaymentsAttributes(
           paymentTokenId: payment.paymentTokenId,
-          totalAmount: TotalAmount(amount: amount, currency: 'PHP'));
+          totalAmount: PaymentAmount(amount: amount, currency: 'PHP'));
 
       final result = await secretClient.instance.payment.onPaymentListener(
           attributes: payments,
@@ -71,12 +71,51 @@ mixin PaymayaEventHandler<T extends StatefulWidget> on State<T> {
     );
     final payments = PaymentsAttributes(
       paymentTokenId: payment.paymentTokenId,
-      totalAmount: TotalAmount(amount: amount.toDouble(), currency: 'PHP'),
+      totalAmount: PaymentAmount(amount: amount.toDouble(), currency: 'PHP'),
     );
 
     final result = await secretClient.instance.payment.create(payments);
     print(result);
     final verificationUrl = result.verificationUrl ?? '';
+
+    if (verificationUrl.isNotEmpty) {
+      await Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => CheckoutPage(
+            url: verificationUrl,
+          ),
+        ),
+      );
+      // if (response) {
+      //   final paymentSource =
+      //       PaymentSource(id: result.id ?? '', type: "source");
+      //   final paymentAttr = CreatePaymentsAttributes(
+      //     amount: _amount.toDouble(),
+      //     currency: 'PHP',
+      //     description: "test gcash",
+      //     source: paymentSource,
+      //   );
+      //   final createPayment = await secret.createPayment(paymentAttr);
+      //   debugPrint("==============================");
+      //   debugPrint("||${createPayment}||");
+      //   debugPrint("==============================");
+      // }
+    }
+  }
+
+  Future<void> checkoutPayment(List<Shoe> cart) async {
+    final amount = cart.fold<num>(
+        0, (previousValue, element) => previousValue + element.amount);
+
+    final payments = CheckoutAttributes(
+      totalAmount: CheckoutAmount(value: amount.toDouble(), currency: 'PHP'),
+      requestReferenceNumber: 'payment',
+    );
+    print(payments);
+    final result = await publicClient.instance.paymayaCheckout.create(payments);
+
+    final verificationUrl = result.redirectUrl ?? '';
 
     if (verificationUrl.isNotEmpty) {
       await Navigator.push(

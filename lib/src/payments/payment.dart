@@ -38,10 +38,10 @@ class Payments<T extends PaymentGateway>
 
       final paymentsId = intent.id;
 
-      // if (intent.errorCode?.isNotEmpty ?? false) {
-      //   // ignore: only_throw_errors
-      //   throw intent.errorMessage ?? "Something went wrong";
-      // }
+      if (intent.errorCode?.isNotEmpty ?? false) {
+        // ignore: only_throw_errors
+        throw intent.errorMessage ?? "Something went wrong";
+      }
       final result = await _paymentResult(
         paymentsId,
         onRedirect: onRedirect,

@@ -126,55 +126,150 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
   }
 }
 
+// mixin UrlIFrameParser<T extends StatefulWidget> on State<T> {
+//   String toCheckoutURL(String url) {
+//     return Uri.dataFromString('''
+//     <html>
+
+// <head>
+//     <style>
+//         body {
+//             overflow: hidden
+//         }
+
+//         .embed-paymaya {
+
+//             border: 0;
+//             position: absolute;
+//             top: 0;
+//             left: 0;
+//             width: 200%; /* Set the width to 200% to zoom the content */
+//             height: 200%; /* Set the height to 200% to zoom the content */
+//         }
+
+//         .embed-paymaya iframe,
+//         .embed-paymaya object,
+//         .embed-paymaya embed {
+//             border: 0;
+//             position: absolute;
+//             top: 0;
+//             left: 0;
+//             width: 100%;
+//             height: 100%;
+//         }
+//     </style>
+// </head>
+
+// <body>
+
+//     <div class="embed-paymaya">
+//         <iframe style="width:100%;height:100%;top:0;left:0;position:absolute;" frameborder="0" allowfullscreen="1"
+//             allow="accelerometer;  encrypted-media;" webkitallowfullscreen mozallowfullscreen allowfullscreen
+//             src="$url"></iframe>
+//     </div>
+// </body>
+// <script>
+//     window.addEventListener('message', ev => {
+//         Paymaya.postMessage(ev.data);
+//     })
+
+// </script>
+// </html>
+
+//     ''', mimeType: 'text/html').toString();
+//   }
+// }
+
 mixin UrlIFrameParser<T extends StatefulWidget> on State<T> {
   String toCheckoutURL(String url) {
     return Uri.dataFromString('''
-    <html>
-
-<head>
-    <style>
-        body {
-            overflow: hidden
-        }
-
-        .embed-paymaya {
-            position: relative;
-            padding-bottom: 56.25%;
-            padding-top: 0px;
-            height: 0px;
-            overflow: hidden;
-        }
-
-        .embed-paymaya iframe,
-        .embed-paymaya object,
-        .embed-paymaya embed {
-            border: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-</head>
-
-<body>
-
-    <iframe style="width:100%;height:100%;top:0;left:0;position:absolute;" frameborder="0" allowfullscreen="1"
-        allow="accelerometer;  encrypted-media;" webkitallowfullscreen mozallowfullscreen allowfullscreen
-        src="$url" ></iframe>
-</body>
-<script>
-    window.addEventListener('message', ev => {
-        Paymaya.postMessage(ev.data);
-    })
-
-   
-
-</script>
-</html>
-    
-    
+      <html>
+        <head>
+          <style>
+            body {
+              margin: 0;
+              height: 100vh;
+              overflow: hidden;
+            }
+            #left-half {
+              width: 100%;
+              height: 100%;
+              overflow-y: scroll;
+              float: left;
+            }
+            
+            #left-half iframe {
+              width: 100%;
+              height: 200%;
+            }
+          </style>
+        </head>
+        <body>
+         
+          <div id="left-half">
+            <iframe src="$url" allowfullscreen="true"></iframe>
+          </div>
+        </body>
+        <script>
+          window.addEventListener('message', ev => {
+            Paymaya.postMessage(ev.data);
+          });
+        </script>
+      </html>
     ''', mimeType: 'text/html').toString();
   }
 }
+
+// mixin UrlIFrameParser<T extends StatefulWidget> on State<T> {
+//   String toCheckoutURL(String url) {
+//     return Uri.dataFromString('''
+//     <html>
+
+// <head>
+//     <style>
+//         body {
+//             overflow: hidden;
+//             margin: 0;
+//             padding: 0;
+//             height: 100vh;
+//         }
+
+//         .iframe-container {
+//             display: flex;
+//             height: 100%;
+//             width: 100%;
+//             overflow: hidden;
+//         }
+
+//         .iframe-container iframe {
+//             width: 50%;
+//             height: 100%;
+//             border: 0;
+//         }
+
+//         .iframe-container::-webkit-scrollbar {
+//             width: 10px;
+//         }
+
+//         .iframe-container::-webkit-scrollbar-track {
+//             background-color: #f5f5f5;
+//         }
+
+//         .iframe-container::-webkit-scrollbar-thumb {
+//             background-color: #000000;
+//         }
+//     </style>
+// </head>
+
+// <body>
+
+//     <div class="iframe-container">
+//         <iframe src="$url"></iframe>
+      
+//     </div>
+// </body>
+
+// </html>
+//     ''', mimeType: 'text/html').toString();
+//   }
+// }

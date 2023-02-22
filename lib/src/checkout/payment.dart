@@ -21,7 +21,7 @@ class PaymayaCheckout<T extends PaymentGateway>
     CheckoutAttributes checkout,
   ) async {
     final options = PayMayaOptions(
-      path: 'checkout/v1/checkouts',
+      path: '/checkouts',
       data: checkout.toJson(),
     );
     final response = await _http.send(options);

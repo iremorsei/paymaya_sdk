@@ -1,4 +1,5 @@
 import 'package:paymaya_sdk/paymaya.dart';
+import 'package:paymaya_sdk/src/checkout/checkout.dart';
 
 /// A relationship of [paymayaPublic] and [paymayaSecret]
 abstract class Paymaya {}
@@ -19,6 +20,7 @@ class PaymayaPublic extends Paymaya {
 
   /// Use for storing payment intent
   PaymentToken get paymentToken => PaymentToken(key, url);
+  PaymayaCheckout get paymayaCheckout => PaymayaCheckout(key, url);
 }
 
 ///{@template paymaya_secret_client}

@@ -55,27 +55,26 @@ class PayMayaSDK {
   }
 
   /// make POST response.
-  Future<T> post<T>(PayMayaOptions options) async {
-    final _http = http ?? PayMayaHttp(secret);
-    final body = jsonEncode(options.data);
-    final response = await _http.post(
-      Uri.https(_apiUrl, "payments/v1${options.path}", options.params),
-      body: body,
-    );
+  // Future<T> post<T>(PayMayaOptions options) async {
+  //   final _http = http ?? PayMayaHttp(secret);
+  //   final body = jsonEncode(options.data);
+  //   final response = await _http.post(
+  //     Uri.https(_apiUrl, "${options.path}", options.params),
+  //     body: body,
+  //   );
 
-    _http.close();
-    return _request(response, options.path);
-  }
+  //   _http.close();
+  //   return _request(response, options.path);
+  // }
 
-  /// make GET response
-  Future<T> get<T>(PayMayaOptions options) async {
-    final _http = http ?? PayMayaHttp(secret);
-    final uri =
-        Uri.https(_apiUrl, "payments/v1${options.path}", options.params);
-    final response = await _http.get(uri);
-    _http.close();
-    return _request(response, options.path);
-  }
+  // /// make GET response
+  // Future<T> get<T>(PayMayaOptions options) async {
+  //   final _http = http ?? PayMayaHttp(secret);
+  //   final uri = Uri.https(_apiUrl, "${options.path}", options.params);
+  //   final response = await _http.get(uri);
+  //   _http.close();
+  //   return _request(response, options.path);
+  // }
 }
 
 /// {@template paymongohttp}
